@@ -3,6 +3,7 @@
 import executivesData from "../../../../data/executives.json";
 import Certificate from "./certificate";
 import localFont from "next/font/local";
+import { useParams } from "next/navigation";
 import { useRef, useState } from "react";
 import styles from "./certificates.module.css";
 
@@ -34,6 +35,10 @@ interface ProcessedExecutive {
 }
 
 export default function ProfilePage() {
+  const params = useParams();
+  const yearParam = Array.isArray(params?.id) ? params.id[0] : params?.id;
+  const selectedYear = typeof yearParam === "string" ? yearParam.trim() : "";
+  const isYearFormatValid = /^\d{4}$/.test(selectedYear);
   const certificatesRef = useRef<HTMLDivElement>(null);
   const [isGenerating, setIsGenerating] = useState(false);
 
@@ -190,95 +195,63 @@ export default function ProfilePage() {
     }
   };
 
-  // Process executives from years 2023 and 2024
-  const processedExecutives: ProcessedExecutive[] = [];
-  
-  // Create a map to track executives who appear in both years
-  const executiveMap = new Map<string, { name: string; positions: string[]; studentId?: string }>();
+  const availableYears = executivesData
+    .map((data: any) => data.year)
+    .filter(Boolean)
+    .sort((a: string, b: string) => a.localeCompare(b));
 
-  // Process 2023 data (only merged)
-  const year2023 = executivesData.find((data: any) => data.year === "2023");
-  if (year2023?.campuses?.merged?.studentExecutives) {
-    year2023.campuses.merged.studentExecutives.forEach((exec: Executive) => {
-      if (exec.studentId) {
-        const key = exec.studentId;
-        const position = `${exec.position}'2023-24`;
-        
-        if (executiveMap.has(key)) {
-          executiveMap.get(key)!.positions.push(position);
-        } else {
-          executiveMap.set(key, {
-            name: exec.name,
-            positions: [position],
-            studentId: exec.studentId
-          });
-        }
-      }
-    });
+  if (!selectedYear || !isYearFormatValid) {
+    return (
+      <div className="p-8">
+        <h1 className="text-3xl font-bold">Executive Certificates</h1>
+        <p className="text-gray-600 mt-2">
+          Invalid year in URL. Use a 4-digit year, for example: /executives/certs/2024
+        </p>
+        {availableYears.length > 0 && (
+          <p className="text-gray-600 mt-2">
+            Available years: {availableYears.join(", ")}
+          </p>
+        )}
+      </div>
+    );
   }
 
-  // Process 2024 data (GUCC wing only, not VGS)
-  const year2024 = executivesData.find((data: any) => data.year === "2024");
-  if (year2024?.studentExecutives) {
-    year2024.studentExecutives.forEach((exec: Executive) => {
-      if (exec.studentId) {
-        const key = exec.studentId;
-        const position = `${exec.position}'Reformed-2024`;
-        
-        if (executiveMap.has(key)) {
-          executiveMap.get(key)!.positions.push(position);
-        } else {
-          executiveMap.set(key, {
-            name: exec.name,
-            positions: [position],
-            studentId: exec.studentId
-          });
-        }
-      }
-    });
-  }
+  const yearEntry = executivesData.find((data: any) => data.year === selectedYear);
+  const yearExecutives: Executive[] =
+    yearEntry?.studentExecutives ??
+    yearEntry?.campuses?.merged?.studentExecutives ??
+    [];
 
-  // Convert map to final array with combined positions
-  executiveMap.forEach((value) => {
-    let finalPosition: string;
-    
-    if (value.positions.length === 2) {
-      // Extract base role names (before the apostrophe)
-      const role1Parts = value.positions[0].split("'");
-      const role2Parts = value.positions[1].split("'");
-      const baseRole1 = role1Parts[0];
-      const baseRole2 = role2Parts[0];
-      
-      if (baseRole1 === baseRole2) {
-        // Same role in both years - use tilde format
-        const period1 = role1Parts[1];
-        const period2 = role2Parts[1];
-        finalPosition = `${baseRole1}'${period1}~${period2}`;
-      } else {
-        // Different roles - use ampersand separator
-        finalPosition = value.positions.join(" & ");
-      }
-    } else {
-      // Single position
-      finalPosition = value.positions[0];
-    }
-    
-    processedExecutives.push({
-      name: value.name,
-      position: finalPosition,
-      studentId: value.studentId
-    });
-  });
+  const processedExecutives: ProcessedExecutive[] = yearExecutives
+    .filter((exec) => exec.studentId)
+    .map((exec) => ({
+      name: exec.name,
+      position: `${exec.position} (${selectedYear})`,
+      studentId: exec.studentId,
+    }))
+    .sort((a, b) => a.name.localeCompare(b.name));
 
-  if (processedExecutives.length === 0) {
-    return <div>No executives found for the specified criteria</div>;
+  if (!yearEntry || processedExecutives.length === 0) {
+    return (
+      <div className="p-8">
+        <h1 className="text-3xl font-bold">Executive Certificates</h1>
+        <p className="text-gray-600 mt-2">
+          No executives found for {selectedYear}.
+        </p>
+        {availableYears.length > 0 && (
+          <p className="text-gray-600 mt-2">
+            Available years: {availableYears.join(", ")}
+          </p>
+        )}
+      </div>
+    );
   }
 
   return (
     <div className="p-8">
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-3xl font-bold">Executive Certificates</h1>
+          <h1 className="text-3xl font-bold">Executive Certificates {selectedYear}</h1>
           <p className="text-gray-600 mt-2">
             {processedExecutives.length} certificate{processedExecutives.length !== 1 ? 's' : ''} available for download
           </p>

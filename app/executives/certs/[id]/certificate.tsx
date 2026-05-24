@@ -3435,48 +3435,15 @@ const Certificate =  (props: {
             </g>
           </g>
         </g>
-        <text
-          fill="#5D3006"
-          xmlSpace="preserve"
-          style={{
-            whiteSpace: "pre",
-          }}
-          fontFamily="OPTIEngraversOldEnglish"
-          fontSize={96}
-          letterSpacing="0em"
-        >
-          <tspan x={228.109} y={193.704}>
-            {"Certificate"}
-          </tspan>
-        </text>
-        <text
-          fill="#231F20"
-          xmlSpace="preserve"
-          style={{
-            whiteSpace: "pre",
-          }}
-          fontFamily="Libra Serif Modern"
-          fontSize={26}
-          letterSpacing="0.5em"
-        >
-          <tspan x={262.432} y={226.872}>
-            {"Of Appreciation"}
-          </tspan>
-        </text>
-        <text
-          fill="#231F20"
-          xmlSpace="preserve"
-          style={{
-            whiteSpace: "pre",
-          }}
-          fontFamily="Libra Serif Modern"
-          fontSize={24}
-          letterSpacing="0em"
-        >
-          <tspan x={249.355} y={261.728}>
-            {"This certificate is proudly presented to:"}
-          </tspan>
-        </text>
+        <rect x={344} y={58} width={70} height={70} fill="#FFF3E1" />
+        <image
+          href="/GUB-New-Logo.svg"
+          x={344}
+          y={58}
+          width={70}
+          height={70}
+          preserveAspectRatio="xMidYMid meet"
+        />
         <path
           d="M378.82 107.433C378.82 107.433 389.14 103.097 391.731 94.6657L391.871 78.4557C391.871 78.4557 386.945 80.2305 382.017 77.1245C382.017 77.1245 380.955 76.7551 379.343 76.7174H378.42C376.791 76.7561 375.744 77.1245 375.744 77.1245C370.816 80.2346 365.878 78.4557 365.878 78.4557L366.019 94.6616C368.605 103.093 378.944 107.429 378.944 107.429L378.82 107.433Z"
           fill="#80BD42"
@@ -3785,6 +3752,15 @@ const Certificate =  (props: {
         <path
           d="M397.795 113.723L397.926 112.244L396.363 110.764L397.214 110.458L397.804 111.111C397.86 111.169 397.899 111.222 397.946 111.265C397.993 111.307 398.007 111.366 398.036 111.407C398.025 111.351 398.018 111.295 398.014 111.238C398.011 111.17 398.011 111.102 398.014 111.035L398.026 110.161L398.853 109.856L398.649 113.407L397.795 113.723Z"
           fill="white"
+        />
+        <rect x={353} y={67} width={520} height={520} fill="#FFF3E1" />
+        <image
+          href="/GUB-New-Logo.svg"
+          x={327}
+          y={51}
+          width={80}
+          height={80}
+          preserveAspectRatio="xMidYMid meet"
         />
         <path
           d="M463.443 92.5C463.443 106.552 452.052 117.943 438 117.943C423.949 117.943 412.557 106.553 412.557 92.5C412.557 78.4475 423.948 67.0573 438 67.0573C452.053 67.0573 463.443 78.4556 463.443 92.5Z"
@@ -4741,6 +4717,48 @@ const Certificate =  (props: {
         <g transform="translate(406, 415) scale(1.8)">
           <g dangerouslySetInnerHTML={{ __html: qrCodeSvg.replace('<svg', '<g').replace('</svg>', '</g>').replace(/width="[^"]*"/g, '').replace(/height="[^"]*"/g, '').replace(/viewBox="[^"]*"/g, '') }} />
         </g>
+        <text
+          fill="#5D3006"
+          xmlSpace="preserve"
+          style={{
+            whiteSpace: "pre",
+          }}
+          fontFamily="OPTIEngraversOldEnglish"
+          fontSize={96}
+          letterSpacing="0em"
+        >
+          <tspan x={228.109} y={193.704}>
+            {"Certificate"}
+          </tspan>
+        </text>
+        <text
+          fill="#231F20"
+          xmlSpace="preserve"
+          style={{
+            whiteSpace: "pre",
+          }}
+          fontFamily="Libra Serif Modern"
+          fontSize={26}
+          letterSpacing="0.5em"
+        >
+          <tspan x={262.432} y={226.872}>
+            {"Of Appreciation"}
+          </tspan>
+        </text>
+        <text
+          fill="#231F20"
+          xmlSpace="preserve"
+          style={{
+            whiteSpace: "pre",
+          }}
+          fontFamily="Libra Serif Modern"
+          fontSize={24}
+          letterSpacing="0em"
+        >
+          <tspan x={249.355} y={261.728}>
+            {"This certificate is proudly presented to:"}
+          </tspan>
+        </text>
         <defs>
           <linearGradient
             id="paint0_linear_3_276"
