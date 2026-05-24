@@ -950,6 +950,36 @@ const Certificate =  (props: {
           height={70}
           preserveAspectRatio="xMidYMid meet"
         />
+        {/* Top center logos group - professionally aligned */}
+        <g id="top-center-logos">
+          {/* GUB Logo - Largest, Left */}
+          <image
+            href="/GUB-New-Logo.svg"
+            x={330}
+            y={85}
+            width={62}
+            height={62}
+            preserveAspectRatio="xMidYMid meet"
+          />
+          {/* CSE Logo - Largest, Center */}
+          <image
+            href="/CSE_LoGo.png"
+            x={405}
+            y={45}
+            width={62}
+            height={62}
+            preserveAspectRatio="xMidYMid meet"
+          />
+          {/* GUCC Logo - Largest, Right */}
+          <image
+            href="/gucc-logo.png"
+            x={480}
+            y={85}
+            width={62}
+            height={62}
+            preserveAspectRatio="xMidYMid meet"
+          />
+        </g>
         {/* QR Code as direct SVG - positioned at x=406, y=415, scaled to 64x64 */}
         <g transform="translate(406, 415) scale(1.8)">
           <g dangerouslySetInnerHTML={{ __html: qrCodeSvg.replace('<svg', '<g').replace('</svg>', '</g>').replace(/width="[^"]*"/g, '').replace(/height="[^"]*"/g, '').replace(/viewBox="[^"]*"/g, '') }} />
