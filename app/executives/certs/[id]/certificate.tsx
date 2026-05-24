@@ -853,7 +853,7 @@ const Certificate =  (props: {
           fontSize={14.5}
           letterSpacing="0em"
         >
-          <tspan x={267.33} y={363.198}>
+          <tspan x={288.33} y={363.198}>
             {"for outstanding dedication and contribution as\u2028"}
           </tspan>
         </text>
@@ -865,7 +865,7 @@ const Certificate =  (props: {
           fontWeight="bold"
           letterSpacing="0em"
           style={{ whiteSpace: "pre", textAnchor: "middle" }}
-          x="50%"
+          x="48%"
           y="380"
         >
           {props.position}
@@ -955,28 +955,28 @@ const Certificate =  (props: {
           {/* GUB Logo - Largest, Left */}
           <image
             href="/GUB-New-Logo.svg"
-            x={330}
-            y={55}
-            width={80}
-            height={80}
+            x={320}
+            y={45}
+            width={95}
+            height={95}
             preserveAspectRatio="xMidYMid meet"
           />
           {/* CSE Logo - Largest, Center */}
           <image
             href="/CSE_LoGo.png"
-            x={405}
-            y={55}
-            width={62}
-            height={62}
+            x={422}
+            y={65}
+            width={52}
+            height={52}
             preserveAspectRatio="xMidYMid meet"
           />
           {/* GUCC Logo - Largest, Right */}
           <image
             href="/gucc-logo.png"
-            x={480}
-            y={55}
-            width={80}
-            height={80}
+            x={485}
+            y={65}
+            width={52}
+            height={52}
             preserveAspectRatio="xMidYMid meet"
           />
         </g>
@@ -990,11 +990,11 @@ const Certificate =  (props: {
           style={{
             whiteSpace: "pre",
           }}
-          fontFamily="OPTIEngraversOldEnglish"
+          fontFamily="Cloister Black"
           fontSize={96}
           letterSpacing="0em"
         >
-          <tspan x={228.109} y={193.704}>
+          <tspan x={250.109} y={193.704}>
             {"Certificate"}
           </tspan>
         </text>
