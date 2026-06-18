@@ -956,15 +956,15 @@ const Certificate =  (props: {
           <image
             href="/GUB-New-Logo.svg"
             x={320}
-            y={45}
-            width={95}
-            height={95}
+            y={40}
+            width={105}
+            height={105}
             preserveAspectRatio="xMidYMid meet"
           />
           {/* CSE Logo - Largest, Center */}
           <image
             href="/CSE_LoGo.png"
-            x={422}
+            x={425}
             y={65}
             width={52}
             height={52}
