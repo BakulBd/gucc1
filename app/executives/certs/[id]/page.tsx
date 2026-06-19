@@ -55,8 +55,8 @@ export default function ProfilePage() {
         return;
       }
       
-      // Find certificate elements
-      const certificateElements = certificatesRef.current.querySelectorAll('[data-certificate]');
+      // Find certificate elements (only the ones not hidden for print)
+      const certificateElements = certificatesRef.current.querySelectorAll('[data-certificate]:not(.print\\:hidden)');
       console.log('Found certificate elements:', certificateElements.length);
       
       if (certificateElements.length === 0) {
@@ -73,25 +73,25 @@ export default function ProfilePage() {
 
       // Create HTML content for printing
       const certificatesHtml = Array.from(certificateElements)
-        .map(element => element.outerHTML)
-        .join('');
+        .map(element => element.innerHTML)
+        .join('</div><div class="certificate-page">');
+
+      // Grab all stylesheets and fonts from the current document to ensure they load in the print window
+      const stylesAndLinks = Array.from(document.querySelectorAll('style, link[rel="stylesheet"]'))
+        .map(el => el.outerHTML)
+        .join('\n');
 
       const printHtml = `
         <!DOCTYPE html>
         <html>
         <head>
           <title>GUCC Executive Certificates</title>
+          ${stylesAndLinks}
           <link rel="preconnect" href="https://fonts.googleapis.com">
           <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
           <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Pinyon+Script:wght@400&display=swap" rel="stylesheet">
+          <link rel="stylesheet" href="https://fonts.cdnfonts.com/css/cloister-black" />
           <style>
-            @font-face {
-              font-family: 'Engravers Old English';
-              src: url('/fonts/engravers-old-english.ttf') format('truetype');
-              font-weight: 400;
-              font-style: normal;
-            }
-            
             @page {
               size: A4 landscape;
               margin: 0;
@@ -104,7 +104,6 @@ export default function ProfilePage() {
             }
             
             body {
-              font-family: 'Montserrat', Arial, sans-serif;
               background: white;
             }
             
@@ -116,6 +115,7 @@ export default function ProfilePage() {
               justify-content: center;
               page-break-after: always;
               page-break-inside: avoid;
+              overflow: hidden;
             }
             
             .certificate-page:last-child {
@@ -123,41 +123,18 @@ export default function ProfilePage() {
             }
             
             .certificate-page svg {
-              max-width: 95vw;
-              max-height: 95vh;
-              width: auto;
-              height: auto;
-            }
-            
-            /* Font family classes to ensure fonts are applied */
-            .montserrat {
-              font-family: var(--font-sans);
-            }
-            
-            .pinyon-script {
-              font-family: var(--font-serif);
-            }
-            
-            .engravers-old-english {
-              font-family: 'Engravers Old English', serif;
-            }
-            
-            @media print {
-              .certificate-page {
-                page-break-after: always;
-                page-break-inside: avoid;
-              }
-              
-              .certificate-page:last-child {
-                page-break-after: avoid;
-              }
+              width: 100vw !important;
+              height: 100vh !important;
+              max-width: none !important;
+              max-height: none !important;
+              object-fit: contain;
             }
           </style>
         </head>
         <body>
-          ${Array.from(certificateElements)
-            .map(element => `<div class="certificate-page">${element.innerHTML}</div>`)
-            .join('')}
+          <div class="certificate-page">
+            ${certificatesHtml}
+          </div>
         </body>
         </html>
       `;
@@ -287,12 +264,23 @@ export default function ProfilePage() {
               <p className="text-gray-600">{executive.position}</p>
             </div>
             {executive.studentId && (
-              <div data-certificate className={styles.certificateContainer}>
-                <Certificate
-                  name={executive.name}
-                  position={executive.position}
-                  profileLink={`${"https://gucc.green.edu.bd"}/executives/${executive.studentId}`}
-                />
+              <div className="flex flex-col xl:flex-row gap-8">
+                <div data-certificate className={`${styles.certificateContainer} print:hidden`}>
+                  <Certificate
+                    name={executive.name}
+                    position={executive.position}
+                    profileLink={`${"https://gucc.green.edu.bd"}/executives/${executive.studentId}`}
+                    variant="standard"
+                  />
+                </div>
+                <div data-certificate className={styles.certificateContainer}>
+                  <Certificate
+                    name={executive.name}
+                    position={executive.position}
+                    profileLink={`${"https://gucc.green.edu.bd"}/executives/${executive.studentId}`}
+                    variant="premium"
+                  />
+                </div>
               </div>
             )}
           </div>
