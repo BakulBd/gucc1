@@ -193,11 +193,37 @@ export default function ProfilePage() {
     );
   }
 
-  const yearEntry = executivesData.find((data: any) => data.year === selectedYear);
-  const yearExecutives: Executive[] =
-    yearEntry?.studentExecutives ??
-    yearEntry?.campuses?.merged?.studentExecutives ??
-    [];
+  const yearEntry: any = executivesData.find((data: any) => data.year === selectedYear);
+  let yearExecutives: Executive[] = [];
+  if (yearEntry) {
+    if (yearEntry.studentExecutives) {
+      yearExecutives = yearEntry.studentExecutives;
+    } else if (yearEntry.campuses) {
+      if (yearEntry.campuses.merged?.studentExecutives) {
+        yearExecutives = yearEntry.campuses.merged.studentExecutives;
+      } else {
+        yearExecutives = Object.values(yearEntry.campuses).flatMap(
+          (campus: any) => campus?.studentExecutives || []
+        );
+      }
+    } else if (yearEntry.wings) {
+      yearExecutives = Object.values(yearEntry.wings).flatMap(
+        (wing: any) => wing?.studentExecutives || []
+      );
+    }
+  }
+
+  // Deduplicate exact same student+position combinations (in case multiple wings list the same exact role)
+  const uniqueExecs = new Map<string, Executive>();
+  yearExecutives.forEach(exec => {
+    if (exec.studentId) {
+      const key = `${exec.studentId}-${exec.position}`;
+      if (!uniqueExecs.has(key)) {
+        uniqueExecs.set(key, exec);
+      }
+    }
+  });
+  yearExecutives = Array.from(uniqueExecs.values());
 
   const processedExecutives: ProcessedExecutive[] = yearExecutives
     .filter((exec) => exec.studentId)
